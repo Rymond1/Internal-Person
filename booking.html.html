@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDR Booking System</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0a0a0a;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  padding: 30px;
+}
+
+input, textarea {
+  width: 90%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 8px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  background: #ff4500;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  margin: 20px auto;
+  padding: 15px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>HDR Booking System</h2>
+
+<input id="name" placeholder="Your Name">
+<input id="service" placeholder="Service Needed">
+<textarea id="message" placeholder="Message"></textarea>
+
+<button onclick="submitBooking()">Submit Booking</button>
+
+<h3>📊 Live Bookings</h3>
+<div id="bookings"></div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/* 🔥 YOUR FIREBASE CONFIG (PASTE YOURS HERE) */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* SUBMIT BOOKING */
+window.submitBooking = async function() {
+  const name = document.getElementById("name").value;
+  const service = document.getElementById("service").value;
+  const message = document.getElementById("message").value;
+
+  if (!name || !service || !message) return alert("Fill all fields");
+
+  await addDoc(collection(db, "bookings"), {
+    name,
+    service,
+    message,
+    time: new Date()
+  });
+
+  alert("Booking submitted!");
+};
+
+/* LIVE DASHBOARD */
+const bookingsDiv = document.getElementById("bookings");
+
+onSnapshot(collection(db, "bookings"), (snapshot) => {
+  bookingsDiv.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    const d = doc.data();
+    bookingsDiv.innerHTML += `
+      <div class="card">
+        <b>${d.name}</b><br>
+        ${d.service}<br>
+        ${d.message}
+      </div>
+    `;
+  });
+});
+</script>
+
+</body>
+</html>

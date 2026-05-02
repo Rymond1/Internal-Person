@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consultation - Internal Person</title>
+<style>
+body { margin:0; font-family: Arial, sans-serif; background:#f4f7f6; color:#333; }
+nav { background:#1e2a38; padding:15px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; }
+nav h1 { color:white; margin:0; font-size:1.5em; }
+nav ul { list-style:none; display:flex; gap:15px; margin:0; padding:0; }
+nav ul li a { color:white; text-decoration:none; font-weight:bold; }
+nav ul li a:hover { color:#00bfa6; }
+.section { padding:60px 20px; text-align:center; max-width:700px; margin:auto; }
+form { display:flex; flex-direction:column; gap:15px; background:white; padding:30px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+input, select, textarea { padding:10px; border-radius:5px; border:1px solid #ccc; font-size:1em; width:100%; }
+textarea { resize:none; }
+button { background:#00bfa6; color:white; padding:10px; border:none; cursor:pointer; font-weight:bold; border-radius:5px; margin-top:10px; }
+button:hover { background:#009f8f; }
+footer { background:#1e2a38; color:white; text-align:center; padding:20px; margin-top:40px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <h1>Internal Person</h1>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="spiritual-guidance.html">Spiritual Guidance</a></li>
+    <li><a href="counselling.html">Consultation</a></li>
+    <li><a href="personal-growth.html">Personal Growth</a></li>
+    <li><a href="booking.html">Booking</a></li>
+    <li><a href="library.html">Library</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="founder.html">Founder</a></li>
+  </ul>
+</nav>
+
+<section class="section">
+  <h2>Consultation Services</h2>
+  <p>Book a personal consultation session to gain guidance and clarity. Each session costs R500 and is designed for individual attention and spiritual growth.</p>
+
+  <form action="mailto:your-email@example.com" method="post" enctype="text/plain">
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email Address" required>
+    <input type="tel" name="phone" placeholder="Phone Number" required>
+    <select name="service" required>
+      <option value="">Select Service</option>
+      <option value="consultation">Consultation - R500</option>
+    </select>
+    <textarea name="comments" maxlength="180" placeholder="Comments (max 180 characters)"></textarea>
+    <button type="submit">Submit Booking</button>
+  </form>
+
+  <a href="index.html"><button>Back to Home</button></a>
+</section>
+
+<footer>
+  <p>© 2026 Internal Person | All rights reserved</p>
+</footer>
+
+</body>
+</html>

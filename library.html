@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internal Person | Human Development</title>
+
+<style>
+body {
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:#0b0f1a;
+    color:#fff;
+}
+
+header {
+    text-align:center;
+    padding:20px;
+    background:#000;
+}
+
+header img { height:70px; }
+header h1 { margin:10px 0 0; font-size:28px; }
+
+nav {
+    background:#111;
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    padding:12px;
+    flex-wrap:wrap;
+}
+
+nav a { color:gold; text-decoration:none; font-weight:bold; }
+
+.hero {
+    text-align:center;
+    padding:60px 20px;
+    background:linear-gradient(to right, #0f2027, #203a43, #2c5364);
+}
+
+.hero h2 { font-size:32px; }
+
+.btn {
+    padding:12px 25px;
+    background:gold;
+    color:#000;
+    border:none;
+    cursor:pointer;
+    margin-top:15px;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+.section { padding:40px 20px; }
+
+.books {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap:30px;
+}
+
+/* ===== 3D BOOK ===== */
+.book-card {
+    perspective:1200px;
+    cursor:pointer;
+}
+
+.book-3d {
+    width:100%;
+    height:360px;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform 1s;
+}
+
+.book-card:hover .book-3d {
+    transform:rotateY(180deg);
+}
+
+/* FRONT COVER WITH GOLD EMBOSS EFFECT */
+.book-front {
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 15px 30px rgba(0,0,0,0.6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
+    font-weight:bold;
+    color:gold;
+    font-size:18px;
+    text-shadow:2px 2px 10px rgba(0,0,0,0.8);
+    letter-spacing:1px;
+}
+
+.cover1 { background:linear-gradient(135deg,#1e3c72,#2a5298); }
+.cover2 { background:linear-gradient(135deg,#000428,#004e92); }
+.cover3 { background:linear-gradient(135deg,#3a1c71,#d76d77,#ffaf7b); }
+
+.book-back {
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#111;
+    border-radius:12px;
+    transform:rotateY(180deg);
+    backface-visibility:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+    text-align:center;
+}
+
+.book-info {
+    text-align:center;
+    margin-top:10px;
+}
+
+.book-info h3 { color:gold; margin:10px 0 5px; }
+
+.buy-btn {
+    margin-top:10px;
+    padding:10px 15px;
+    background:gold;
+    color:#000;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+footer {
+    background:#000;
+    text-align:center;
+    padding:20px;
+    margin-top:30px;
+}
+
+.whatsapp {
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#25D366;
+    color:white;
+    padding:15px;
+    border-radius:50%;
+    font-size:20px;
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="HDR human development logo variations.png">
+    <h1>INTERNAL PERSON</h1>
+    <p>Human Development & Renewal</p>
+</header>
+
+<nav>
+    <a href="#books">Books</a>
+    <a href="index.html">Home</a>
+</nav>
+
+<div class="hero">
+    <h2>Faith. Guidance. Clarity. Purpose.</h2>
+    <button class="btn">Start Your Journey</button>
+</div>
+
+<div class="section" id="books">
+    <h2>📚 Featured Books (R200 each)</h2>
+
+    <div class="books">
+
+        <div class="book-card">
+            <div class="book-3d">
+                <div class="book-front cover1">WHO HE KNEW<br>THAT YOU ARE<br>A PERFECT</div>
+                <div class="book-back">
+                    Discover your divine identity
+                </div>
+            </div>
+            <div class="book-info">
+                <h3>Book 1 - R200</h3>
+                <button class="buy-btn" onclick="buyBook('Who He Knew That You Are A Perfect')">Buy on WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="book-card">
+            <div class="book-3d">
+                <div class="book-front cover2">ON THE POWER<br>OF FANTASTIC</div>
+                <div class="book-back">
+                    Spiritual strength and insight
+                </div>
+            </div>
+            <div class="book-info">
+                <h3>Book 2 - R200</h3>
+                <button class="buy-btn" onclick="buyBook('On the Power of Fantastic')">Buy on WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="book-card">
+            <div class="book-3d">
+                <div class="book-front cover3">MASTER OF<br>HEAVEN & ANGELS</div>
+                <div class="book-back">
+                    Divine authority and wisdom
+                </div>
+            </div>
+            <div class="book-info">
+                <h3>Book 3 - R200</h3>
+                <button class="buy-btn" onclick="buyBook('The Master of Heaven and Angels')">Buy on WhatsApp</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer id="contact">
+    <p>© 2026 Internal Person</p>
+</footer>
+
+<a class="whatsapp" href="https://wa.me/27722510489">💬</a>
+
+<script>
+function buyBook(title){
+    let phone = "27722510489";
+    let message = "Hello, I want to buy the book: " + title + " for R200";
+    let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+    window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>

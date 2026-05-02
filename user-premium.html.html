@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InternalPerson | Monthly Subscription</title>
+
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+  background:#0a0a0a;
+  color:white;
+  text-align:center;
+  padding-top:90px;
+}
+
+header {
+  position:fixed;
+  top:0;
+  width:100%;
+  background:#111;
+  padding:15px;
+  font-weight:bold;
+  z-index:1000;
+}
+
+input {
+  display:block;
+  margin:10px auto;
+  padding:10px;
+  width:260px;
+}
+
+button {
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  border-radius:5px;
+  background:#ff4500;
+  color:white;
+  cursor:pointer;
+}
+
+#app { display:none; }
+
+.card {
+  background:#1a1a1a;
+  padding:15px;
+  margin:10px auto;
+  width:80%;
+  border-radius:8px;
+}
+
+.premium {
+  color:#00ff88;
+  font-weight:bold;
+}
+
+.free {
+  color:#ff4d4d;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  INTERNALPERSON | MONTHLY SUBSCRIPTION
+</header>
+
+<!-- AUTH -->
+<div id="authBox">
+  <h2>Register / Login</h2>
+
+  <input id="username" placeholder="Username">
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="register()">Register</button>
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <h2 id="welcome"></h2>
+  <p id="status"></p>
+
+  <button onclick="logout()">Logout</button>
+
+  <div class="card">
+    <h3>📚 Premium Content</h3>
+    <p id="premiumText"></p>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/* FIREBASE */
+const firebaseConfig = {
+  apiKey: "AIzaSyDkLA7DIxb4Pl4oyc9lYzC5NDeXpDpRDR0",
+  authDomain: "internalperson.firebaseapp.com",
+  projectId: "internalperson",
+  storageBucket: "internalperson.firebasestorage.app",
+  messagingSenderId: "329689622018",
+  appId: "1:329689622018:web:24ce8d8870178449c9691b"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+setPersistence(auth, browserLocalPersistence);
+
+/* DOM */
+const authBox = document.getElementById("authBox");
+const appBox = document.getElementById("app");
+
+/* REGISTER */
+window.register = async function () {
+  const userCred = await createUserWithEmailAndPassword(
+    auth,
+    email.value,
+    password.value
+  );
+
+  await setDoc(doc(db, "users", userCred.user.uid), {
+    username: username.value,
+    email: email.value,
+    subscription: "FREE",
+    subscriptionStart: null,
+    subscriptionEnd: null
+  });
+
+  alert("Registered successfully!");
+};
+
+/* LOGIN */
+window.login = async function () {
+  await signInWithEmailAndPassword(
+    auth,
+    email.value,
+    password.value
+  );
+};
+
+/* LOGOUT */
+window.logout = function () {
+  signOut(auth);
+};
+
+/* CHECK SUBSCRIPTION */
+function checkSubscription(userData) {
+
+  const now = new Date();
+  const end = userData.subscriptionEnd ? new Date(userData.subscriptionEnd) : null;
+
+  if (userData.subscription === "PREMIUM" && end && now < end) {
+    return "ACTIVE";
+  }
+
+  return "EXPIRED";
+}
+
+/* AUTH */
+onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
+    authBox.style.display = "block";
+    appBox.style.display = "none";
+    return;
+  }
+
+  authBox.style.display = "none";
+  appBox.style.display = "block";
+
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) return;
+
+  const data = snap.data();
+
+  const status = checkSubscription(data);
+
+  document.getElementById("welcome").innerText =
+    "Welcome " + data.username;
+
+  document.getElementById("status").innerText =
+    "Subscription: " + data.subscription + " (" + status + ")";
+
+  if (status === "ACTIVE") {
+    document.getElementById("premiumText").innerText =
+      "🔥 You have FULL PREMIUM ACCESS for this month!";
+  } else {
+    document.getElementById("premiumText").innerText =
+      "🔒 Upgrade required for premium access";
+  }
+});
+</script>
+
+</body>
+</html>

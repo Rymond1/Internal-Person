@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDR Internal Person - Live Platform</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0a0a0a;
+  color: white;
+}
+
+/* HEADER */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
+  padding: 15px 20px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.logo {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: radial-gradient(circle,#ff4500,#ff8c00);
+  box-shadow: 0 0 20px #ff4500;
+}
+
+/* NAV */
+nav a {
+  color:white;
+  margin:0 10px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+nav a:hover {
+  color:#ff9800;
+}
+
+/* LIVE BAR */
+.live-bar {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: red;
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-weight: bold;
+  z-index: 2000;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+/* HERO */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  opacity: 0.7;
+}
+
+/* BUTTONS */
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  margin: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.live-btn { background: red; color: white; }
+.whatsapp-btn { background: #25D366; color: white; }
+.admin-btn { background: #444; color: white; }
+
+/* SECTION */
+.section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+/* CHAT */
+.chat-box {
+  width: 90%;
+  max-width: 500px;
+  height: 250px;
+  margin: auto;
+  overflow-y: auto;
+  background: rgba(255,255,255,0.05);
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.chat-input {
+  width: 65%;
+  padding: 10px;
+}
+
+.send-btn {
+  padding: 10px;
+}
+
+/* COUNTDOWN */
+#countdown {
+  margin-top: 10px;
+  color: #ffcc00;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo"></div>
+
+  <!-- NEW NAV -->
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#">Live</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <!-- ADMIN BUTTON (HIDDEN) -->
+  <button class="admin-btn" id="adminBtn" onclick="toggleLive()" style="display:none;">
+    Admin Toggle LIVE
+  </button>
+</header>
+
+<!-- LIVE STATUS -->
+<div class="live-bar" id="liveBar">LIVE STARTING SOON</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="title">HDR INTERNAL PERSON</div>
+  <div class="subtitle">Spiritual • Growth • Community</div>
+
+  <button class="live-btn" onclick="openLive()">▶ WATCH LIVE</button>
+  <button class="whatsapp-btn" onclick="notify()">📲 GET NOTIFIED</button>
+
+  <div id="countdown"></div>
+</section>
+
+<!-- CHAT -->
+<section class="section">
+  <h2>Live Chat</h2>
+
+  <div class="chat-box" id="chatBox"></div>
+
+  <input class="chat-input" id="msg" placeholder="Type message...">
+  <button class="send-btn" onclick="sendMsg()">Send</button>
+</section>
+
+<script>
+
+// 🔐 ADMIN CONTROL
+const ADMIN_EMAIL = "your-email@example.com";
+
+// Simulated login (only YOU see admin)
+let currentUser = {
+  email: "your-email@example.com"
+};
+
+// Show admin button only for you
+if(currentUser.email === ADMIN_EMAIL){
+  document.getElementById("adminBtn").style.display = "block";
+}
+
+let live = false;
+
+/* LIVE TOGGLE */
+function toggleLive() {
+  live = !live;
+  document.getElementById("liveBar").innerText =
+    live ? "🔴 LIVE NOW" : "LIVE STARTING SOON";
+}
+
+/* LIVE BUTTON */
+function openLive() {
+  window.open("https://youtube.com", "_blank");
+}
+
+/* WHATSAPP NOTIFY */
+function notify() {
+  window.open("https://wa.me/27722510489?text=Please%20notify%20me%20when%20HDR%20goes%20live", "_blank");
+}
+
+/* COUNTDOWN */
+let target = new Date();
+target.setMinutes(target.getMinutes() + 20);
+
+setInterval(() => {
+  let now = new Date();
+  let diff = target - now;
+
+  if (diff <= 0) {
+    document.getElementById("countdown").innerText = "🔴 WE ARE LIVE NOW";
+    return;
+  }
+
+  let m = Math.floor(diff / 60000);
+  let s = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById("countdown").innerText =
+    `Live starts in ${m}m ${s}s`;
+}, 1000);
+
+/* CHAT SYSTEM */
+function loadChat() {
+  let chat = JSON.parse(localStorage.getItem("hdr_chat") || "[]");
+  let box = document.getElementById("chatBox");
+  box.innerHTML = "";
+
+  chat.forEach(msg => {
+    box.innerHTML += `<p>👤 ${msg}</p>`;
+  });
+}
+
+function sendMsg() {
+  let msg = document.getElementById("msg").value;
+  if (!msg) return;
+
+  let chat = JSON.parse(localStorage.getItem("hdr_chat") || "[]");
+  chat.push(msg);
+
+  localStorage.setItem("hdr_chat", JSON.stringify(chat));
+
+  document.getElementById("msg").value = "";
+  loadChat();
+}
+
+loadChat();
+
+</script>
+
+</body>
+</html>
